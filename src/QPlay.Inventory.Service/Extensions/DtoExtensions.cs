@@ -1,5 +1,5 @@
-﻿using QPlay.Inventory.Service.Entities;
-using QPlay.Inventory.Service.Models.Dtos;
+﻿using QPlay.Inventory.Service.Models.Dtos;
+using QPlay.Inventory.Service.Models.Entities;
 
 namespace QPlay.Inventory.Service.Extensions;
 

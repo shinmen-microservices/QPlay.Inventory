@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Timeout;
 using QPlay.Common.MongoDB;
 using QPlay.Inventory.Service.Clients;
+using QPlay.Inventory.Service.Models.Entities;
 using System;
 using System.Net.Http;
 
