@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using QPlay.Common.Repositories.Interfaces;
-using QPlay.Inventory.Service.Clients;
 using QPlay.Inventory.Service.Extensions;
 using QPlay.Inventory.Service.Models.Dtos;
 using QPlay.Inventory.Service.Models.Entities;
@@ -15,29 +15,29 @@ namespace QPlay.Inventory.Service.Controllers;
 [Route("items")]
 public class ItemsController : ControllerBase
 {
-    private readonly IRepository<InventoryItem> itemsRepository;
-    private readonly CatalogClient catalogClient;
+    private readonly IRepository<InventoryItem> inventoryItemsRepository;
+    private readonly IRepository<CatalogItem> catalogItemsRepository;
 
-    public ItemsController(IRepository<InventoryItem> itemsRepository, CatalogClient catalogClient)
+    public ItemsController(IRepository<InventoryItem> inventoryItemsRepository, IRepository<CatalogItem> catalogItemsRepository)
     {
-        this.itemsRepository = itemsRepository;
-        this.catalogClient = catalogClient;
+        this.inventoryItemsRepository = inventoryItemsRepository;
+        this.catalogItemsRepository = catalogItemsRepository;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetAsync(Guid userId)
     {
-        if (userId == Guid.Empty)
-        {
-            return BadRequest();
-        }
+        if (userId == Guid.Empty) return BadRequest();
 
-        IReadOnlyCollection<CatalogItemDto> catalogItems = await catalogClient.GetCatalogItemsAsync();
-        IReadOnlyCollection<InventoryItem> inventoryItemEntities = await itemsRepository.GetAllAsync(item => item.UserId == userId);
+        IReadOnlyCollection<InventoryItem> inventoryItems = await inventoryItemsRepository
+            .GetAllAsync(item => item.UserId == userId);
+        IEnumerable<Guid> inventoryItemCatalogItemIds = inventoryItems.Select(items => items.CatalogItemId);
+        IReadOnlyCollection<CatalogItem> catalogItems = await catalogItemsRepository
+            .GetAllAsync(item => inventoryItemCatalogItemIds.Contains(item.Id));
 
-        IEnumerable<InventoryItemDto> inventoryItemDtos = inventoryItemEntities.Select(inventoryItem =>
+        IEnumerable<InventoryItemDto> inventoryItemDtos = inventoryItems.Select(inventoryItem =>
         {
-            CatalogItemDto catalogItem = catalogItems.Single(catalogItem => catalogItem.Id == inventoryItem.CatalogItemId);
+            CatalogItem catalogItem = catalogItems.Single(catalogItem => catalogItem.Id == inventoryItem.CatalogItemId);
             return inventoryItem.AsDto(catalogItem.Name, catalogItem.Description);
         });
 
@@ -47,12 +47,12 @@ public class ItemsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> PostAsync(GrantItemsDto grantItemsDto)
     {
-        InventoryItem inventoryItem = await itemsRepository.GetAsync(
-            item => item.UserId == grantItemsDto.UserId && item.CatalogItemId == grantItemsDto.CatalogItemId);
+        InventoryItem inventoryItem = await inventoryItemsRepository
+            .GetAsync(item => item.UserId == grantItemsDto.UserId && item.CatalogItemId == grantItemsDto.CatalogItemId);
 
         if (inventoryItem == null)
         {
-            inventoryItem = new InventoryItem
+            inventoryItem = new()
             {
                 CatalogItemId = grantItemsDto.CatalogItemId,
                 UserId = grantItemsDto.UserId,
@@ -60,12 +60,12 @@ public class ItemsController : ControllerBase
                 AcquiredDate = DateTimeOffset.UtcNow
             };
 
-            await itemsRepository.CreateAsync(inventoryItem);
+            await inventoryItemsRepository.CreateAsync(inventoryItem);
         }
         else
         {
             inventoryItem.Quantity += grantItemsDto.Quantity;
-            await itemsRepository.UpdateAsync(inventoryItem);
+            await inventoryItemsRepository.UpdateAsync(inventoryItem);
         }
 
         return Ok();

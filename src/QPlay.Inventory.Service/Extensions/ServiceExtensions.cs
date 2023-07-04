@@ -9,7 +9,7 @@ using QPlay.Inventory.Service.Models.Entities;
 using System;
 using System.Net.Http;
 
-namespace Play.Inventory.Service.Extensions;
+namespace QPlay.Inventory.Service.Extensions;
 
 public static class ServiceExtensions
 {
@@ -40,7 +40,9 @@ public static class ServiceExtensions
 
     public static IServiceCollection ConfigureMongo(this IServiceCollection services)
     {
-        services.AddMongo().AddMongoRepository<InventoryItem>("inventoryitems");
+        services.AddMongo()
+            .AddMongoRepository<InventoryItem>("inventoryitems")
+            .AddMongoRepository<CatalogItem>("catalogitems");
         return services;
     }
 

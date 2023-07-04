@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Play.Inventory.Service.Extensions;
+using QPlay.Common.MassTransit;
+using QPlay.Inventory.Service.Extensions;
 
 namespace QPlay.Inventory.Service;
 
@@ -14,7 +15,9 @@ public class Program
         // Add services to the container.
 
         builder.Services.ConfigureMongo();
-        builder.Services.ConfigureHttpClient();
+        // Not used for async comms
+        // builder.Services.ConfigureHttpClient();
+        builder.Services.AddMassTransitWithRabbitMq();
 
         builder.Services.ConfigureControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
