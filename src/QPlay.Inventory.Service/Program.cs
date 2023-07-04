@@ -14,6 +14,7 @@ public class Program
         // Add services to the container.
 
         builder.Services.ConfigureMongo();
+        builder.Services.ConfigureHttpClient();
 
         builder.Services.ConfigureControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
