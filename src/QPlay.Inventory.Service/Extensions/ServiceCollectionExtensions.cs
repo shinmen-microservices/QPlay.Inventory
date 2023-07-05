@@ -11,7 +11,7 @@ using System.Net.Http;
 
 namespace QPlay.Inventory.Service.Extensions;
 
-public static class ServiceExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
     {

@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Play.Inventory.Service": {
+    "QPlay.Inventory.Service": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

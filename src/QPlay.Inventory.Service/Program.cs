@@ -31,6 +31,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.ConfigureCors(builder.Configuration);
         }
 
         app.UseHttpsRedirection();
