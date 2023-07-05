@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QPlay.Common.Repositories.Interfaces;
 using QPlay.Inventory.Service.Extensions;
@@ -6,7 +7,9 @@ using QPlay.Inventory.Service.Models.Dtos;
 using QPlay.Inventory.Service.Models.Entities;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace QPlay.Inventory.Service.Controllers;
@@ -15,6 +18,8 @@ namespace QPlay.Inventory.Service.Controllers;
 [Route("items")]
 public class ItemsController : ControllerBase
 {
+    private const string ADMIN = "Admin";
+
     private readonly IRepository<InventoryItem> inventoryItemsRepository;
     private readonly IRepository<CatalogItem> catalogItemsRepository;
 
@@ -25,9 +30,17 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetAsync(Guid userId)
     {
         if (userId == Guid.Empty) return BadRequest();
+
+        string currentUserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+        if (Guid.Parse(currentUserId) != userId && !User.IsInRole(ADMIN))
+        {
+            return Forbid();
+        }
 
         IReadOnlyCollection<InventoryItem> inventoryItems = await inventoryItemsRepository
             .GetAllAsync(item => item.UserId == userId);
@@ -45,6 +58,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = ADMIN)]
     public async Task<ActionResult> PostAsync(GrantItemsDto grantItemsDto)
     {
         InventoryItem inventoryItem = await inventoryItemsRepository

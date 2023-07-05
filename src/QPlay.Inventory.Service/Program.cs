@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QPlay.Common.Identity;
 using QPlay.Common.MassTransit;
 using QPlay.Inventory.Service.Extensions;
 
@@ -18,6 +19,7 @@ public class Program
         // Not used for async comms
         // builder.Services.ConfigureHttpClient();
         builder.Services.AddMassTransitWithRabbitMq();
+        builder.Services.ConfigureAuthentication();
 
         builder.Services.ConfigureControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,8 +38,9 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
+        app.UseAuthentication();
 
+        app.UseAuthorization();
 
         app.MapControllers();
 
