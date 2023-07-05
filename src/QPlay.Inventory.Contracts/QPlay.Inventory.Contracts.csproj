@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+	<PackageDescription>Contracts for inventory messages exchange.</PackageDescription>
+	<Company>Shinmen</Company>
+	<Authors>Shinmen Dokkodo</Authors>
+  </PropertyGroup>
+
+</Project>
