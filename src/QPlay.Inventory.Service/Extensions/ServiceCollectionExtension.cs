@@ -1,17 +1,20 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GreenPipes;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Timeout;
+using QPlay.Common.MassTransit;
 using QPlay.Common.MongoDB;
 using QPlay.Inventory.Service.Clients;
+using QPlay.Inventory.Service.Exceptions;
 using QPlay.Inventory.Service.Models.Entities;
 using System;
 using System.Net.Http;
 
 namespace QPlay.Inventory.Service.Extensions;
 
-public static class ServiceCollectionExtensions
+public static class ServiceCollectionExtension
 {
     public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
     {
@@ -49,6 +52,17 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection ConfigureControllers(this IServiceCollection services)
     {
         services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
+        return services;
+    }
+
+    public static IServiceCollection ConfigureMassTransit(this IServiceCollection services)
+    {
+        services.AddMassTransitWithRabbitMq(retryConfigurator =>
+        {
+            retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+            retryConfigurator.Ignore(typeof(UnknownItemException));
+        });
+
         return services;
     }
 }
