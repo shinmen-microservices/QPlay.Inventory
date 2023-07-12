@@ -1,5 +1,6 @@
 ﻿using QPlay.Common.Entities.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace QPlay.Inventory.Service.Models.Entities;
 
@@ -10,4 +11,5 @@ public class InventoryItem : IEntity
     public Guid CatalogItemId { get; set; }
     public int Quantity { get; set; }
     public DateTimeOffset AcquiredDate { get; set; }
+    public HashSet<Guid> MessageIds { get; set; } = new();
 }

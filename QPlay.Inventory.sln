@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QPlay.Inventory.Service", "src\QPlay.Inventory.Service\QPlay.Inventory.Service.csproj", "{977802A3-7AFD-4FF8-A9DB-93548B8CFB2B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QPlay.Inventory.Contracts", "src\QPlay.Inventory.Contracts\QPlay.Inventory.Contracts.csproj", "{93C1135C-B751-4FCC-95F6-18D333D9D212}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{977802A3-7AFD-4FF8-A9DB-93548B8CFB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{977802A3-7AFD-4FF8-A9DB-93548B8CFB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{977802A3-7AFD-4FF8-A9DB-93548B8CFB2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93C1135C-B751-4FCC-95F6-18D333D9D212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93C1135C-B751-4FCC-95F6-18D333D9D212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93C1135C-B751-4FCC-95F6-18D333D9D212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93C1135C-B751-4FCC-95F6-18D333D9D212}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,25 +2,19 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QPlay.Common.Identity;
-using QPlay.Common.MassTransit;
 using QPlay.Inventory.Service.Extensions;
 
 namespace QPlay.Inventory.Service;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
         // Add services to the container.
-
         builder.Services.ConfigureMongo();
-        // Not used for async comms
-        // builder.Services.ConfigureHttpClient();
-        builder.Services.AddMassTransitWithRabbitMq();
+        builder.Services.ConfigureMassTransit();
         builder.Services.ConfigureAuthentication();
-
         builder.Services.ConfigureControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -37,13 +31,9 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
         app.UseAuthentication();
-
         app.UseAuthorization();
-
         app.MapControllers();
-
         app.Run();
     }
 }
