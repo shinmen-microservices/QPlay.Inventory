@@ -20,7 +20,8 @@ public class CatalogItemDeletedConsumer : IConsumer<CatalogItemDeleted>
         CatalogItemDeleted message = context.Message;
         CatalogItem item = await repository.GetAsync(message.ItemId);
 
-        if (item == null) return;
+        if (item == null)
+            return;
 
         await repository.RemoveAsync(message.ItemId);
     }

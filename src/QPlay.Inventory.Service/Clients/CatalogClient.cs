@@ -17,7 +17,8 @@ public class CatalogClient
 
     public async Task<IReadOnlyCollection<CatalogItemDto>> GetCatalogItemsAsync()
     {
-        IReadOnlyCollection<CatalogItemDto> items = await httpClient.GetFromJsonAsync<IReadOnlyCollection<CatalogItemDto>>("/items");
+        IReadOnlyCollection<CatalogItemDto> items = await httpClient
+            .GetFromJsonAsync<IReadOnlyCollection<CatalogItemDto>>("/items");
         return items;
     }
 }

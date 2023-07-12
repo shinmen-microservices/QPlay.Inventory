@@ -2,7 +2,4 @@
 
 namespace QPlay.Inventory.Contracts;
 
-public record InventoryItemsGranted
-(
-    Guid CorrelationId
-);
+public record InventoryItemsGranted(Guid CorrelationId);

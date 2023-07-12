@@ -20,7 +20,8 @@ public class CatalogItemCreatedConsumer : IConsumer<CatalogItemCreated>
         CatalogItemCreated message = context.Message;
         CatalogItem item = await repository.GetAsync(message.ItemId);
 
-        if (item != null) return;
+        if (item != null)
+            return;
 
         item = new()
         {

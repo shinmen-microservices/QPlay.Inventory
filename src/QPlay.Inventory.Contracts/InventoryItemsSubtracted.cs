@@ -2,7 +2,4 @@
 
 namespace QPlay.Inventory.Contracts;
 
-public record InventoryItemsSubtracted
-(
-    Guid CorrelationId
-);
+public record InventoryItemsSubtracted(Guid CorrelationId);

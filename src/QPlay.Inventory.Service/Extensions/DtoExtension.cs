@@ -7,13 +7,6 @@ public static class DtoExtension
 {
     public static InventoryItemDto AsDto(this InventoryItem item, string name, string description)
     {
-        return new
-        (
-            item.CatalogItemId,
-            name,
-            description,
-            item.Quantity,
-            item.AcquiredDate
-        );
+        return new(item.CatalogItemId, name, description, item.Quantity, item.AcquiredDate);
     }
 }
