@@ -1,4 +1,6 @@
-﻿using GreenPipes;
+﻿using System;
+using System.Net.Http;
+using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
@@ -9,8 +11,6 @@ using QPlay.Common.MongoDB;
 using QPlay.Inventory.Service.Clients;
 using QPlay.Inventory.Service.Exceptions;
 using QPlay.Inventory.Service.Models.Entities;
-using System;
-using System.Net.Http;
 
 namespace QPlay.Inventory.Service.Extensions;
 
